@@ -1,0 +1,832 @@
+:root {
+  color-scheme: dark;
+  --black: #000;
+  --focus: #ff4fd8;
+  --issue-bg: #170014;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--black);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--black);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.page-home {
+  overflow: hidden;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none;
+}
+
+.cursor-orb {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(255, 79, 216, 0.32);
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 260ms ease,
+    opacity 180ms ease,
+    box-shadow 260ms ease;
+}
+
+.cursor-orb::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: inherit;
+  background: #fff;
+  content: "";
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease;
+}
+
+.cursor-ready .cursor-orb {
+  opacity: 1;
+}
+
+.is-cursor-hover .cursor-orb {
+  width: 54px;
+  height: 54px;
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 28px rgba(255, 79, 216, 0.48);
+}
+
+.is-cursor-hover .cursor-orb::after {
+  opacity: 0.28;
+}
+
+.viewport-shell {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+}
+
+.scroll-shell {
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.mobile-dock {
+  display: none;
+}
+
+.figma-stage {
+  position: relative;
+  margin: 0 auto;
+  background: var(--black);
+  aspect-ratio: var(--frame-w) / var(--frame-h);
+}
+
+/* full-bleed backdrop for the issue page: the art's own edge columns,
+   stretched to the viewport so the purple field has no seam */
+.page-issue {
+  background: #0f020e;
+}
+
+.page-issue .scroll-shell {
+  background-image:
+    url("assets/pages/issue-bleed-left.png?v=20260610-figma9"),
+    url("assets/pages/issue-bleed-right.png?v=20260610-figma9");
+  background-position: left top, right top;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 50.2% 100%, 50.2% 100%;
+}
+
+.landing-stage {
+  width: 100vw;
+  max-width: calc(100svh * 1.539714);
+}
+
+.static-stage {
+  width: min(100vw, calc(var(--frame-w) * 1px));
+}
+
+.article-stage {
+  width: min(100vw, calc(100svh * 1.539714), calc(var(--frame-w) * 1px));
+}
+
+.landing-sequence,
+.sequence-frame,
+.static-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.landing-sequence {
+  z-index: 1;
+}
+
+.sequence-frame,
+.static-frame {
+  object-fit: contain;
+  user-select: none;
+}
+
+.sequence-frame {
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 430ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sequence-frame.is-revealed,
+.sequence-frame.is-active {
+  opacity: 1;
+}
+
+.static-frame {
+  z-index: 1;
+  transform: translateZ(0);
+  transition:
+    filter 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hotspots,
+.tile-link,
+.buy-link,
+.read-more-link,
+.article-next,
+.contact-overlay {
+  position: absolute;
+  z-index: 5;
+}
+
+.hotspots {
+  inset: 0;
+  pointer-events: none;
+}
+
+.hotspot,
+.tile-link,
+.buy-link,
+.read-more-link,
+.article-next {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+  color: transparent;
+  text-indent: -9999px;
+  pointer-events: auto;
+}
+
+.hotspot::after,
+.tile-link::after,
+.buy-link::after,
+.read-more-link::after,
+.article-next::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.26), rgba(255, 79, 216, 0.12) 46%, transparent 72%);
+  box-shadow: 0 0 28px rgba(255, 79, 216, 0.3);
+  content: "";
+  opacity: 0;
+  transform: scale(0.82);
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after,
+.tile-link:hover::after,
+.tile-link:focus-visible::after,
+.buy-link:hover::after,
+.buy-link:focus-visible::after,
+.read-more-link:hover::after,
+.read-more-link:focus-visible::after,
+.article-next:hover::after,
+.article-next:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tile-link::after {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.12) 42%, transparent 70%),
+    rgba(255, 79, 216, 0.06);
+}
+
+.buy-link::after,
+.read-more-link::after,
+.article-next::after {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 32px rgba(255, 255, 255, 0.16);
+}
+
+.static-stage:has(.tile-link:hover) .static-frame,
+.static-stage:has(.tile-link:focus-visible) .static-frame,
+.static-stage:has(.buy-link:hover) .static-frame,
+.static-stage:has(.buy-link:focus-visible) .static-frame,
+.static-stage:has(.read-more-link:hover) .static-frame,
+.static-stage:has(.read-more-link:focus-visible) .static-frame,
+.static-stage:has(.article-next:hover) .static-frame,
+.static-stage:has(.article-next:focus-visible) .static-frame {
+  filter: saturate(1.04) brightness(1.04);
+  transform: scale(1.006);
+}
+
+.hotspot:focus-visible,
+.tile-link:focus-visible,
+.buy-link:focus-visible,
+.read-more-link:focus-visible,
+.article-next:focus-visible,
+.contact-overlay input:focus-visible,
+.contact-overlay textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Hotspot geometry is measured from the exported art itself (pixel bounds of
+   each icon/asset plus symmetric padding), not the Figma layer rects, so the
+   hover glow always centers on the visible element. The nav icons sit at the
+   same pixels in every export; only the page height changes the percentages.
+
+   The nav is no longer baked into the page art: each hotspot carries its
+   sprite (extracted from the export) and pins horizontally to the VIEWPORT
+   via calc((100% - 100vw) / 2 + inset), so the navbar expands proportionally
+   on browsers wider than the art while the stage content stays put. At or
+   below the art width, (100% - 100vw) is 0 and everything sits exactly at
+   its original in-art position. The right icon cluster keeps its internal
+   spacing in stage units and pins as a unit. */
+
+.hotspot {
+  overflow: visible;
+  border-radius: 14px;
+}
+
+.hotspot img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.hotspot-home img { width: 111.6364%; height: 142.6667%; }
+.hotspot-contact img { width: 138.8889%; height: 138.8889%; }
+.hotspot-issue img { width: 132.1839%; height: 136.8421%; }
+.hotspot-shop img { width: 138.3562%; height: 135.443%; }
+
+.hotspot-home {
+  left: calc((100% - 100vw) / 2 + 1.85vw);
+  top: 2.44%;
+  width: 18.19%;
+  height: 7.64%;
+}
+
+.hotspot-contact {
+  right: calc((100% - 100vw) / 2 + 2.71vw + 14.48%);
+  top: 3.16%;
+  width: 4.76%;
+  height: 7.33%;
+}
+
+.hotspot-issue {
+  right: calc((100% - 100vw) / 2 + 2.71vw + 6.42%);
+  top: 2.95%;
+  width: 5.75%;
+  height: 7.74%;
+}
+
+.hotspot-shop {
+  right: calc((100% - 100vw) / 2 + 2.71vw);
+  top: 2.44%;
+  width: 4.83%;
+  height: 8.04%;
+}
+
+/* shop.png is 1242px tall (vs 982): same icon pixels, shop-page percentages */
+.page-shop .hotspot-home { top: 1.93%; height: 6.04%; }
+.page-shop .hotspot-contact { top: 2.5%; height: 5.8%; }
+.page-shop .hotspot-issue { top: 2.33%; height: 6.12%; }
+.page-shop .hotspot-shop { top: 1.93%; height: 6.36%; }
+
+/* issue.png is 2159px tall */
+.page-issue .hotspot-home { top: 1.11%; height: 3.47%; }
+.page-issue .hotspot-contact { top: 1.44%; height: 3.34%; }
+.page-issue .hotspot-issue { top: 1.34%; height: 3.52%; }
+.page-issue .hotspot-shop { top: 1.11%; height: 3.66%; }
+
+/* Shop tiles hug each product-art + caption cluster; the export has no card
+   frames around them. */
+.tile-link {
+  border-radius: 16px;
+}
+
+.tile-bag-one {
+  left: 6.68%;
+  top: 12.72%;
+  width: 19.78%;
+  height: 38.65%;
+}
+
+.tile-bag-two {
+  left: 36.77%;
+  top: 12.16%;
+  width: 19.97%;
+  height: 39.21%;
+}
+
+.tile-stickers {
+  left: 66.27%;
+  top: 20.13%;
+  width: 25.07%;
+  height: 29.71%;
+}
+
+.tile-issue-zero {
+  left: 6.22%;
+  top: 54.91%;
+  width: 22.75%;
+  height: 37.04%;
+}
+
+.tile-issue-one {
+  left: 36.24%;
+  top: 54.03%;
+  width: 23.48%;
+  height: 37.92%;
+}
+
+.tile-keychains {
+  left: 67.33%;
+  top: 55.56%;
+  width: 26.06%;
+  height: 36.39%;
+}
+
+/* BUY NOW pill on the issue page */
+.buy-link {
+  left: 44.84%;
+  top: 38.26%;
+  width: 12.57%;
+  height: 2.59%;
+  border-radius: 999px;
+}
+
+.read-more-link {
+  border-radius: 10px;
+}
+
+.read-more-imran {
+  left: 89.75%;
+  top: 66.1%;
+  width: 9.46%;
+  height: 2.08%;
+}
+
+.article-next {
+  left: 89.42%;
+  top: 50.71%;
+  width: 4.23%;
+  height: 6.52%;
+  border-radius: 999px;
+}
+
+.contact-overlay {
+  inset: 0;
+  pointer-events: none;
+}
+
+.contact-overlay input,
+.contact-overlay textarea {
+  position: absolute;
+  left: 33.27%;
+  width: 33.47%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  caret-color: var(--focus);
+  font: 16px/1.3 Arial, Helvetica, sans-serif;
+  outline: none;
+  padding: 0 18px;
+  pointer-events: auto;
+  resize: none;
+  transition:
+    background-color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.contact-overlay input {
+  height: 5.6%;
+}
+
+#first-name {
+  top: 36.56%;
+}
+
+#last-name {
+  top: 47.25%;
+}
+
+#email {
+  top: 57.94%;
+}
+
+#message {
+  top: 68.64%;
+  height: 18.64%;
+  padding-top: 16px;
+}
+
+.contact-overlay input:hover,
+.contact-overlay textarea:hover,
+.contact-overlay input:focus,
+.contact-overlay textarea:focus {
+  background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 -1px rgba(255, 79, 216, 0.36);
+}
+
+.collateral-strip {
+  display: grid;
+  width: min(100vw, 1230px);
+  grid-template-columns: repeat(auto-fit, minmax(min(365px, 100%), 1fr));
+  gap: 18px;
+  margin: 0 auto;
+  padding: 32px 18px 48px;
+  background: var(--issue-bg);
+}
+
+.collateral-strip img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition:
+    filter 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.collateral-strip img:hover {
+  filter: brightness(1.08) saturate(1.04);
+  transform: translateY(-5px);
+}
+
+.mobile-contact-form {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    opacity: 1;
+    transition: none;
+  }
+
+  .sequence-frame {
+    transition: none;
+  }
+
+  .static-frame,
+  .hotspot::after,
+  .tile-link::after,
+  .buy-link::after,
+  .read-more-link::after,
+  .article-next::after,
+  .contact-overlay input,
+  .contact-overlay textarea,
+  .collateral-strip img {
+    transition: none;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  body {
+    --mobile-dock-space: calc(82px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page-home {
+    padding-bottom: 0;
+  }
+
+  .page-home .viewport-shell {
+    min-height: calc(100svh - var(--mobile-dock-space));
+  }
+
+  .page-article .viewport-shell {
+    min-height: calc(100svh - var(--mobile-dock-space));
+  }
+
+  .page-home .landing-stage,
+  .page-article .article-stage {
+    width: min(100vw, calc((100svh - var(--mobile-dock-space)) * 1.539714));
+  }
+
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: auto;
+  }
+
+  .cursor-orb {
+    display: none;
+  }
+
+  .mobile-dock {
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    left: max(12px, env(safe-area-inset-left, 0px));
+    z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    max-width: 430px;
+    min-height: 58px;
+    margin: 0 auto;
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.72);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px);
+  }
+
+  .dock-link {
+    position: relative;
+    display: grid;
+    min-width: 48px;
+    min-height: 48px;
+    place-items: center;
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+
+  .dock-link[aria-current="page"],
+  .dock-link:active,
+  .dock-link:focus-visible {
+    background: rgba(255, 79, 216, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 0 20px rgba(255, 79, 216, 0.22);
+  }
+
+  .dock-link:active {
+    transform: scale(0.96);
+  }
+
+  .dock-icon {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
+  .dock-home .dock-icon::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+    content: "";
+    transform: translate(-50%, -34%) rotate(45deg);
+  }
+
+  .dock-home .dock-icon::after {
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 18px;
+    height: 13px;
+    background: #000;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  .dock-contact .dock-icon::before {
+    position: absolute;
+    inset: 4px;
+    border: 3px solid currentColor;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 999px;
+    content: "";
+    transform: rotate(-135deg);
+  }
+
+  .dock-contact .dock-icon::after {
+    position: absolute;
+    right: 2px;
+    bottom: 3px;
+    width: 8px;
+    height: 5px;
+    border-radius: 5px;
+    background: currentColor;
+    content: "";
+    transform: rotate(35deg);
+  }
+
+  .dock-issue .dock-icon::before {
+    position: absolute;
+    inset: 2px;
+    border: 2px solid currentColor;
+    border-radius: 2px;
+    content: "";
+  }
+
+  .dock-issue .dock-icon::after {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 50%;
+    width: 2px;
+    background: currentColor;
+    box-shadow:
+      -6px 0 0 -1px currentColor,
+      6px 0 0 -1px currentColor;
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  .dock-shop .dock-icon::before {
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+    left: 3px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-radius: 2px;
+    content: "";
+  }
+
+  .dock-shop .dock-icon::after {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    width: 12px;
+    height: 10px;
+    border: 2px solid currentColor;
+    border-bottom: 0;
+    border-radius: 999px 999px 0 0;
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  /* Scaled-down art makes the in-image targets too small to tap; pin
+     fixed-size targets to each element's measured center instead. */
+  .buy-link {
+    left: 51.12%;
+    top: 39.56%;
+    width: 150px;
+    height: 48px;
+    transform: translate(-50%, -50%);
+  }
+
+  .read-more-imran {
+    left: auto;
+    right: 4px;
+    top: 67.14%;
+    width: 150px;
+    height: 48px;
+    transform: translateY(-50%);
+  }
+
+  .article-next {
+    left: 91.53%;
+    top: 53.97%;
+    width: 52px;
+    height: 52px;
+    transform: translate(-50%, -50%);
+  }
+
+  .contact-overlay {
+    display: none;
+  }
+
+  .mobile-contact-form {
+    display: grid;
+    width: min(calc(100vw - 32px), 420px);
+    gap: 10px;
+    margin: 18px auto 10px;
+    padding: 0 0 14px;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  .mobile-contact-form label {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .mobile-contact-form input,
+  .mobile-contact-form textarea {
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    caret-color: var(--focus);
+    font: 16px/1.3 Arial, Helvetica, sans-serif;
+    padding: 12px 14px;
+    outline: none;
+  }
+
+  .mobile-contact-form textarea {
+    min-height: 128px;
+    resize: vertical;
+  }
+
+  .mobile-contact-form input:focus,
+  .mobile-contact-form textarea:focus {
+    box-shadow: inset 0 -2px var(--focus), 0 0 18px rgba(255, 79, 216, 0.14);
+  }
+
+  .collateral-strip {
+    gap: 12px;
+    padding: 20px 12px 96px;
+  }
+
+  .contact-overlay input,
+  .contact-overlay textarea {
+    font-size: 14px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 300px) {
+  .mobile-dock {
+    right: max(8px, env(safe-area-inset-right, 0px));
+    left: max(8px, env(safe-area-inset-left, 0px));
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .dock-link {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

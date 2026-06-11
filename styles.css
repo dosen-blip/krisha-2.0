@@ -127,8 +127,8 @@ body.is-leaving {
 
 .page-issue .scroll-shell {
   background-image:
-    url("assets/pages/issue-bleed-left.png?v=20260610-figma9"),
-    url("assets/pages/issue-bleed-right.png?v=20260610-figma9");
+    url("assets/pages/issue-bleed-left.png?v=20260610-figma12"),
+    url("assets/pages/issue-bleed-right.png?v=20260610-figma12");
   background-position: left top, right top;
   background-repeat: no-repeat, no-repeat;
   background-size: 50.2% 100%, 50.2% 100%;
@@ -190,6 +190,7 @@ body.is-leaving {
 .buy-link,
 .read-more-link,
 .article-next,
+.add-to-cart,
 .contact-overlay {
   position: absolute;
   z-index: 5;
@@ -204,7 +205,8 @@ body.is-leaving {
 .tile-link,
 .buy-link,
 .read-more-link,
-.article-next {
+.article-next,
+.add-to-cart {
   position: absolute;
   display: block;
   overflow: hidden;
@@ -218,7 +220,8 @@ body.is-leaving {
 .tile-link::after,
 .buy-link::after,
 .read-more-link::after,
-.article-next::after {
+.article-next::after,
+.add-to-cart::after {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -243,7 +246,9 @@ body.is-leaving {
 .read-more-link:hover::after,
 .read-more-link:focus-visible::after,
 .article-next:hover::after,
-.article-next:focus-visible::after {
+.article-next:focus-visible::after,
+.add-to-cart:hover::after,
+.add-to-cart:focus-visible::after {
   opacity: 1;
   transform: scale(1);
 }
@@ -257,7 +262,8 @@ body.is-leaving {
 
 .buy-link::after,
 .read-more-link::after,
-.article-next::after {
+.article-next::after,
+.add-to-cart::after {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 32px rgba(255, 255, 255, 0.16);
 }
@@ -269,7 +275,9 @@ body.is-leaving {
 .static-stage:has(.read-more-link:hover) .static-frame,
 .static-stage:has(.read-more-link:focus-visible) .static-frame,
 .static-stage:has(.article-next:hover) .static-frame,
-.static-stage:has(.article-next:focus-visible) .static-frame {
+.static-stage:has(.article-next:focus-visible) .static-frame,
+.static-stage:has(.add-to-cart:hover) .static-frame,
+.static-stage:has(.add-to-cart:focus-visible) .static-frame {
   filter: saturate(1.04) brightness(1.04);
   transform: scale(1.006);
 }
@@ -279,6 +287,8 @@ body.is-leaving {
 .buy-link:focus-visible,
 .read-more-link:focus-visible,
 .article-next:focus-visible,
+.add-to-cart:focus-visible,
+.contact-instagram:focus-visible,
 .contact-overlay input:focus-visible,
 .contact-overlay textarea:focus-visible {
   outline: 2px solid var(--focus);
@@ -434,6 +444,15 @@ body.is-leaving {
   border-radius: 999px;
 }
 
+/* ADD TO CART pill on the bag product page (measured from the export) */
+.add-to-cart {
+  left: 69.25%;
+  top: 61.91%;
+  width: 15.67%;
+  height: 8.35%;
+  border-radius: 999px;
+}
+
 .contact-overlay {
   inset: 0;
   pointer-events: none;
@@ -488,6 +507,35 @@ body.is-leaving {
 .contact-overlay textarea:focus {
   background-color: rgba(255, 255, 255, 0.03);
   box-shadow: inset 0 -1px rgba(255, 79, 216, 0.36);
+}
+
+/* Instagram link beneath the contact fields (desktop overlay + mobile form) */
+.contact-instagram {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  pointer-events: auto;
+  transition: color 220ms ease, transform 220ms ease;
+}
+
+.contact-instagram svg {
+  width: 100%;
+  height: 100%;
+}
+
+.contact-overlay .contact-instagram {
+  position: absolute;
+  left: 50%;
+  top: 92%;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+}
+
+.contact-overlay .contact-instagram:hover,
+.contact-overlay .contact-instagram:focus-visible {
+  color: var(--focus);
+  transform: translate(-50%, -50%) scale(1.12);
 }
 
 .collateral-strip {
@@ -546,6 +594,8 @@ body.is-leaving {
   .buy-link::after,
   .read-more-link::after,
   .article-next::after,
+  .add-to-cart::after,
+  .contact-instagram,
   .contact-overlay input,
   .contact-overlay textarea,
   .collateral-strip img {
@@ -761,6 +811,14 @@ body.is-leaving {
     transform: translate(-50%, -50%);
   }
 
+  .add-to-cart {
+    left: 77.08%;
+    top: 66.09%;
+    width: 160px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+  }
+
   .contact-overlay {
     display: none;
   }
@@ -802,6 +860,20 @@ body.is-leaving {
   .mobile-contact-form input:focus,
   .mobile-contact-form textarea:focus {
     box-shadow: inset 0 -2px var(--focus), 0 0 18px rgba(255, 79, 216, 0.14);
+  }
+
+  .mobile-contact-form .contact-instagram {
+    justify-self: center;
+    width: 40px;
+    height: 40px;
+    margin-top: 6px;
+    padding: 4px;
+  }
+
+  .mobile-contact-form .contact-instagram:hover,
+  .mobile-contact-form .contact-instagram:focus-visible {
+    color: var(--focus);
+    transform: scale(1.1);
   }
 
   .collateral-strip {
